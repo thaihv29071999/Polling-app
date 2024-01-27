@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreatePollingDto } from './create-polling.dto';
+import { Paging } from 'src/common/ultis';
 
-export class UpdatePollingDto extends PartialType(CreatePollingDto) {}
+export class FilterPollingDto extends PartialType(Paging) {}

@@ -1,13 +1,8 @@
-
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/entity/base.entity';
 import { PollingEntity } from 'src/polling/entities/polling.entity';
-import { PollingOptionEntity } from 'src/polling-options/entities/polling-option.entity';
+import { PollingOptionEntity } from 'src/polling/entities/polling-option.entity';
+import { PollingOptionUserEntity } from 'src/polling/entities/polling-option-user.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -23,9 +18,11 @@ export class UserEntity extends BaseEntity {
   @Column()
   fullName: string;
 
-  @OneToMany(() => PollingEntity, (polling) => polling.user)
+  @OneToMany(() => PollingEntity, (polling) => polling.user, { cascade: true })
   public pollings!: PollingEntity[];
 
-  @OneToMany(() => PollingOptionEntity, (pollingOption) => pollingOption.user)
-  public pollingOptions!: PollingOptionEntity[];
+  @OneToMany(() => PollingOptionUserEntity, (optionUser) => optionUser.user, {
+    cascade: true,
+  })
+  public optionUsers!: PollingOptionUserEntity[];
 }
