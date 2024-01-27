@@ -1,0 +1,20 @@
+# Use postgres/example user/password credentials
+version: '3'
+
+services:
+  database:
+    image: postgres:latest
+    container_name: my_postgres
+    environment:
+      - POSTGRES_DB=pollingapp
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pollingapppassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+  
