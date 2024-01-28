@@ -1,4 +1,4 @@
-##Polling App
+## Polling App
 
 ```bash
 Build a polling app for creating and participating in polls. Users can create
@@ -20,6 +20,7 @@ your own poll.
 execute your app.
 ● Write unit tests for creating and voting on polls. (Integration test is not
 required).
+```
 
 ## Back-end
 
