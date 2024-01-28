@@ -15,16 +15,14 @@ import { HttpAdapterHost } from '@nestjs/core';
 
 export class ErrorException extends BadRequestException {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(code: HttpStatus, message: any) {
-    super({ code, message });
+  constructor(statusCode: HttpStatus, message: any) {
+    super({ statusCode, message });
   }
 }
- 
+
 @Catch()
 export class ErrorExceptionFilter implements ExceptionFilter {
-  constructor(
-    private readonly httpAdapterHost: HttpAdapterHost,
-  ) {}
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(exception: unknown, host: ArgumentsHost) {
     const { httpAdapter } = this.httpAdapterHost;
@@ -37,7 +35,7 @@ export class ErrorExceptionFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? (exception.getResponse() as ErrorOutput)
         : {
-            code: ERROR_CODE.INTERNAL_SERVER_ERROR,
+            statusCode: ERROR_CODE.INTERNAL_SERVER_ERROR,
             message: 'Some thing went wrong!',
             debug: exception,
           };
@@ -48,7 +46,7 @@ export class ErrorExceptionFilter implements ExceptionFilter {
 }
 
 export class ErrorOutput {
-  code: number;
+  statusCode: number;
 
   debug?: {
     message: string;

@@ -26,7 +26,7 @@ export class TransformationInterceptor<T>
       '';
     return next.handle().pipe(
       map((data) => ({
-        code: [201, 200].includes(
+        statusCode: [201, 200].includes(
           context.switchToHttp().getResponse().statusCode,
         )
           ? 200
