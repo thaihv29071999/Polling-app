@@ -2,7 +2,7 @@
 
 ```bash
 # run app
-$ cd backend/
+$ cd back-end/
 $ yarn install
 $ docker-compose up
 $ npm run start:dev
@@ -11,6 +11,6 @@ $ npm run start:dev
 ## Font-end
 ```bash
 # run app
-$ cd fontend/
+$ cd font-end/
 $ yarn install
 $ yarn start
