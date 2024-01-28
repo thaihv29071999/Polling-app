@@ -18,7 +18,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-  async login(params: LoginRequestDto): Promise<LoginResDto> {
+  async login(params: LoginRequestDto) {
     const userExist = await this.userRepo.findOne({
       where: { email: params.email },
     });
@@ -34,12 +34,13 @@ export class AuthService {
     }
     delete userExist.password;
     const jwt = await this.generateJwt(userExist);
-    const loginResDto = new LoginResDto();
-    loginResDto.accessToken = jwt;
-    return loginResDto;
+    return {
+      accessToken: jwt,
+      ...userExist,
+    };
   }
   async generateJwt(user) {
-    return this.jwtService.signAsync( 
+    return this.jwtService.signAsync(
       { user },
       {
         secret: this.configService.get('JWT_SECRET'),

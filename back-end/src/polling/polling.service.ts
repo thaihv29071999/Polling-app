@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { CreatePollingDto, PollingOptionsDto } from './dto/create-polling.dto';
+import { CreatePollingDto } from './dto/create-polling.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PollingEntity } from './entities/polling.entity';
 import { Repository } from 'typeorm';
@@ -28,12 +28,12 @@ export class PollingService {
         `The Polling ${params.title} already exists!`,
       );
     this.validatePollingOptions(params.options);
-    const pollingOptions = params.options.map((e) => {
+
+    const pollingOptions = params.options.map((option) => {
       const pollingOption = new PollingOptionEntity();
-      pollingOption.content = e.content;
+      pollingOption.content = option;
       return pollingOption;
     });
-    console.log(pollingOptions);
     const polling = this.pollingRepo.create({
       pollingOptions,
       title: params.title,
@@ -45,7 +45,7 @@ export class PollingService {
     return this.pollingRepo.save(polling);
   }
 
-  validatePollingOptions(options: PollingOptionsDto[]) {
+  validatePollingOptions(options: string[]) {
     if (!options || (options && options.length === 0))
       throw new ErrorException(HttpStatus.BAD_REQUEST, `There is no option!`);
     if (options && (options.length < 2 || options.length > 5))
@@ -59,10 +59,10 @@ export class PollingService {
         `The options cannot be duplicate!`,
       );
   }
-  isDuplicateOption(options: PollingOptionsDto[]) {
+  isDuplicateOption(options: string[]) {
     const seen = new Set();
     for (const option of options) {
-      const content = option.content;
+      const content = option;
       if (seen.has(content)) {
         return true;
       }
@@ -79,7 +79,7 @@ export class PollingService {
       order: { id: 'DESC' },
       skip: (page - 1) * pageSize,
       take: pageSize,
-      relations: ['user'],
+      relations: ['user', 'pollingOptions.optionUsers.user'],
     });
     pollings = pollings.map((e) => {
       delete e.user.password;

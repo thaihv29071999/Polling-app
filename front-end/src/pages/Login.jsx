@@ -22,7 +22,9 @@ const Login = () => {
       password,
     });
     if (result && result.statusCode === 200) {
-      localStorage.setItem("token", result.data.accessToken);
+      const {accessToken, ...currentUser} = result.data
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
       navigate("/")
     }
   };

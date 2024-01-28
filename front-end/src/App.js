@@ -5,6 +5,8 @@ import PageNotFound from "./components/PageNotFound";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import NewPoll from "./pages/NewPoll";
+import Poll from "./pages/Poll";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="/sign-up" exact element={<SignUp />} />
           <Route path="/" element={<AuthenLogin />}>
             <Route path="/" exact element={<HomePage />} />
+            <Route path="/new-poll" element={<NewPoll />} />
+            <Route path="/poll/:pollId" element={<Poll />} />
           </Route>
           <Route path="*" exact element={<PageNotFound />} />
         </Routes>
