@@ -11,6 +11,6 @@ $ npm run start:dev
 ## Font-end
 ```bash
 # run app
-$ cd font-end/
+$ cd front-end/
 $ yarn install
 $ yarn start
