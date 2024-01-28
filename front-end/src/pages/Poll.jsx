@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { callApi } from "../api/callApi";
+import Chart from "../components/Chart";
 
-const Poll = () => {
+const Poll = ({ socket }) => {
   const navigate = useNavigate();
   const [poll, setPoll] = useState(null);
   const [isCurrentUser, setIsCurrentUser] = useState(false);
@@ -24,10 +25,17 @@ const Poll = () => {
       localStorage.getItem("token")
     );
     if (result && result.statusCode === 200) {
-      // socket.emit("new-vote", { pollyId });
+      socket.emit("vote", { pollId });
       alert("You voted successfully!!");
+      window.location.reload(true);
     }
   };
+  useEffect(() => {
+    socket.on(`voted_${pollId}`, (data) => {
+      setPoll(data);
+    });
+  }, [socket, poll]);
+
   const handleOption = (e) => {
     setIdSelectedOption(e.target.value);
   };
@@ -134,6 +142,9 @@ const Poll = () => {
                   Vote
                 </button>
               </div>
+            )}
+            {(isVote || isCurrentUser) && (
+              <Chart pollingOptions={poll?.pollingOptions} />
             )}
           </form>
         </div>

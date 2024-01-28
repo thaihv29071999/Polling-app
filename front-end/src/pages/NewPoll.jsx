@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { callApi } from "../api/callApi";
 
-const NewPoll = () => {
+const NewPoll = ({socket}) => {
   const [title, setTitle] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const navigate = useNavigate();
@@ -19,16 +19,16 @@ const NewPoll = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await callApi(
-      "polling",
+      "polling/new-polly",
       "post",
       {
         title,
         options,
-      },
+      }, 
       localStorage.getItem("token")
     );
     if (result && result.statusCode === 200) {
-      console.log("aaaaaaaaaaaa");
+      socket.emit("new-polly", {pollId: result.data.id} );
       navigate("/");
     }
   };

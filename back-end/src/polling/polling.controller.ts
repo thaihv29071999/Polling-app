@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { PollingService } from './polling.service';
 import { CreatePollingDto } from './dto/create-polling.dto';
-import { FilterPollingDto } from './dto/update-polling.dto';
 import { ResponseMessage } from 'src/decorators/response.decorator';
 import { VotePollingDto } from './dto/vote-polling.dto';
 
@@ -20,7 +19,7 @@ export class PollingController {
   constructor(private readonly pollingService: PollingService) {}
 
   @ResponseMessage('Create Polling successful!')
-  @Post()
+  @Post('new-polly')
   async create(@Body() params: CreatePollingDto, @Request() req: Request) {
     const currentUserId = req['user'].id;
     return this.pollingService.create(params, currentUserId);
@@ -28,8 +27,8 @@ export class PollingController {
 
   @ResponseMessage('Get list Pollings successful!')
   @Post('list')
-  async findAll(@Body() params: FilterPollingDto) {
-    return this.pollingService.findAll(params);
+  async findAll() {
+    return this.pollingService.findAll();
   }
 
   @ResponseMessage('Get detail Polling successful!')

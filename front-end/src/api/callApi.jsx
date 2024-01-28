@@ -1,7 +1,6 @@
 import axios from "axios";
 const BASE_URL = 'http://localhost:3100/';
 export async function callApi(path, method, data, token) {
-  console.log('BASE_URL: ', BASE_URL)
   try {
     const result = await axios.request({ 
       baseURL: BASE_URL,

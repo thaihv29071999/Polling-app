@@ -24,7 +24,7 @@ const CardItem = ({ poll }) => {
                 className="col-span-2 grid grid-cols-2 text-center"
               >
                 <span className="col-span-1">{option?.content}</span>
-                <span className="col-span-1">{option.optionUsers.length}</span>
+                <span className="col-span-1">{option?.optionUsers?.length ?? 0}</span>
               </li>
             ))}
           </ul>

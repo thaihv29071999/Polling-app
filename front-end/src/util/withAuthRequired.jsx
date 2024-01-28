@@ -5,7 +5,6 @@ export function withAuthRequired(Component) {
   return function () {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
-    console.log('Component: ', Component)
 
     useEffect(() => {
       if (!token) {

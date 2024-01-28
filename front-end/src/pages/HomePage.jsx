@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { callApi } from "../api/callApi";
 import CardItem from "../components/CardItem";
 
-const HomePage = () => {
+const HomePage = ({ socket }) => {
   const [polls, setPoll] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const result = await callApi(
         `polling/list`,
         "post",
-        { page: 1, pageSize: 10 },
+        {},
         localStorage.getItem("token")
       );
       if (result) {
@@ -19,6 +19,26 @@ const HomePage = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    socket.on(`new-polly-create`, (data) => {
+      polls.unshift(data);
+      const newData = polls.map((e) => e);
+
+      setPoll(newData);
+    });
+  }, [socket, polls]);
+
+  useEffect(() => {
+    socket.on(`update`, (data) => {
+      const newData = polls.map((e) => {
+        if (e.id === data.id) e = data;
+        return e;
+      });
+      setPoll(newData);
+    });
+  }, [socket, polls]);
+
   return (
     <>
       <div className="">

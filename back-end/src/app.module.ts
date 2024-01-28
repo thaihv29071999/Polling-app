@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PollingModule } from './polling/polling.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PollingModule } from './polling/polling.module';
     UserModule,
     AuthModule,
     PollingModule,
+    SocketModule
   ],
   controllers: [],
   providers: [],

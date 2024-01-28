@@ -5,7 +5,6 @@ import { PollingEntity } from './entities/polling.entity';
 import { Repository } from 'typeorm';
 import { ErrorException } from 'src/common/exceptions';
 import { PollingOptionEntity } from 'src/polling/entities/polling-option.entity';
-import { FilterPollingDto } from './dto/update-polling.dto';
 import { VotePollingDto } from './dto/vote-polling.dto';
 import { PollingOptionUserEntity } from './entities/polling-option-user.entity';
 
@@ -41,7 +40,6 @@ export class PollingService {
         id: currentUserId,
       },
     });
-    console.log('polling: ', polling);
     return this.pollingRepo.save(polling);
   }
 
@@ -71,14 +69,9 @@ export class PollingService {
     return false;
   }
 
-  async findAll(params: FilterPollingDto) {
-    const page = params.page ? params.page : 1;
-    const pageSize = params.pageSize ? params.pageSize : 10;
-
+  async findAll() {
     let [pollings, count] = await this.pollingRepo.findAndCount({
-      order: { id: 'DESC' },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      order: { id: 'DESC', pollingOptions: { id: 'ASC' } },
       relations: ['user', 'pollingOptions.optionUsers.user'],
     });
     pollings = pollings.map((e) => {
@@ -86,9 +79,6 @@ export class PollingService {
       return e;
     });
     return {
-      page: page,
-      pageSize: pageSize,
-      totalPage: Math.ceil(count / pageSize),
       pollings,
     };
   }
@@ -97,6 +87,7 @@ export class PollingService {
     const polling = await this.pollingRepo.findOne({
       where: { id },
       relations: ['user', 'pollingOptions.optionUsers.user'],
+      order: { pollingOptions: { id: 'ASC' } },
     });
     if (!polling)
       throw new ErrorException(

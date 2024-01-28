@@ -16,5 +16,6 @@ import { PollingOptionUserEntity } from './entities/polling-option-user.entity';
   ],
   controllers: [PollingController],
   providers: [PollingService],
+  exports: [PollingService],
 })
 export class PollingModule {}
